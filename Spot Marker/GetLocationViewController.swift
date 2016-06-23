@@ -20,13 +20,17 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate {
     var latitude: Double?
     var location: CLLocation?
     
+    var annotationArray = [Annotations]()
+    
+
+    
     
     // MARK:- ** Constants **
     let locationManager = CLLocationManager()
     
     let textMessages = TextMessages()
     
-    let initialLocation = CLLocation(latitude: 21.282778, longitude: -157.829444)   // Coordinates for the initial Map Location
+    let initialLocation = CLLocation(latitude: 50.088333, longitude: -97.219444)   // Coordinates for the initial Map Location
     
     let regionRadius: CLLocationDistance = 1000     // Amount of Area the Map will show around the given Coordinates
     
@@ -39,7 +43,7 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate {
         activityIndicator.hidden = true
         mainButtonOutlet.setTitle(textMessages.getLocation, forState: .Normal)
         
-        centerMapOnLocation(initialLocation)
+        setInitalMapView(initialLocation)
     }
     
     
@@ -62,12 +66,17 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate {
     @IBAction func clearAction() {
         
         stopLocationManager()
-      
         location = nil
-        
         updateLabels()
         
-        centerMapOnLocation(initialLocation)
+        // Check to see if the annotation array is empty.
+        // If not, remove the last entry
+        if annotationArray.isEmpty == false {
+            mapview.removeAnnotation(annotationArray.last!)
+        }
+        
+        setInitalMapView(initialLocation)
+        mainButtonOutlet.hidden = false
     }
     
     
@@ -82,15 +91,26 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate {
     
     
     // MARK:- ** Functions **
+    func setInitalMapView(location: CLLocation) {
+        let theSpan: MKCoordinateSpan = MKCoordinateSpanMake(35, 35)
+        let coordinateRegion: MKCoordinateRegion = MKCoordinateRegionMake(location.coordinate, theSpan)
+        mapview.setRegion(coordinateRegion, animated: true)
+    }
+    
     func centerMapOnLocation(location: CLLocation) {
         
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRadius * 2, regionRadius * 2)
         mapview.setRegion(coordinateRegion, animated: true)
     }
     
+    
     func updateLabels() {
         
         if let location = location {
+            
+            mainButtonOutlet.setBackgroundImage(UIImage(named: "MainButtonYellow"), forState: .Normal)
+            mainButtonOutlet.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+            mainButtonOutlet.setTitle("Save", forState: .Normal)
             
             latitudeLabel.hidden = false
             longitudeLabel.hidden = false
@@ -98,14 +118,19 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate {
             latitudeLabel.text = "Latitude: " + String(format: "%.8f", location.coordinate.latitude)
             longitudeLabel.text = "Longitude: " + String(format: "%.8f", location.coordinate.longitude)
             
-            saveButtonOutlet.hidden = false
             clearButtonOutlet.hidden = false
             
-            centerMapOnLocation(location)
-        } else {
-            saveButtonOutlet.hidden = true
-            clearButtonOutlet.hidden = true
             
+            centerMapOnLocation(location)
+            
+            let annotation = Annotations(title:"", coordinate: location.coordinate, info:"")
+            annotationArray.append(annotation)
+            mapview.addAnnotation(annotationArray.last!)
+            
+            
+        } else {
+            
+            clearButtonOutlet.hidden = true
             latitudeLabel.hidden = true
             longitudeLabel.hidden = true
         }
@@ -170,7 +195,7 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate {
     
     func showLocationServicesDeniedAlert() {
         
-        let alert = UIAlertController(title: textMessages.locServ, message: "Please enable Location Services for 'Spot Marker' in your Settings App", preferredStyle: .Alert)
+        let alert = UIAlertController(title: textMessages.locServDisabled, message: "Please enable Location Services for 'Spot Marker' in your Settings App", preferredStyle: .Alert)
         
         let okAction = UIAlertAction(title: textMessages.ok, style: .Default, handler: nil)
         
