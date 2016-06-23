@@ -67,6 +67,7 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate {
         
         stopLocationManager()
         location = nil
+        setGetLocationButton()
         updateLabels()
         
         // Check to see if the annotation array is empty.
@@ -83,16 +84,20 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate {
     @IBAction func mainButtonAction(sender: UIButton) {
         if gettingLocation {
             clearAction()
-        } else {
+        } else if location == nil {
             getLocation()
+        } else if location != nil {
+            saveAction()
         }
+            
+        
     }
     
     
     
     // MARK:- ** Functions **
     func setInitalMapView(location: CLLocation) {
-        let theSpan: MKCoordinateSpan = MKCoordinateSpanMake(35, 35)
+        let theSpan: MKCoordinateSpan = MKCoordinateSpanMake(50, 50)
         let coordinateRegion: MKCoordinateRegion = MKCoordinateRegionMake(location.coordinate, theSpan)
         mapview.setRegion(coordinateRegion, animated: true)
     }
@@ -108,9 +113,7 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate {
         
         if let location = location {
             
-            mainButtonOutlet.setBackgroundImage(UIImage(named: "MainButtonYellow"), forState: .Normal)
-            mainButtonOutlet.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-            mainButtonOutlet.setTitle("Save", forState: .Normal)
+            setSaveButton()
             
             latitudeLabel.hidden = false
             longitudeLabel.hidden = false
@@ -258,7 +261,29 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate {
 
 
 
+extension GetLocationViewController {
+    func setGetLocationButton() {
+        mainButtonOutlet.hidden = false
+        mainButtonOutlet.setTitle(textMessages.getLocation, forState: .Normal)
+        mainButtonOutlet.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        mainButtonOutlet.setBackgroundImage(UIImage(named: "MainButtonGreen"), forState: .Normal)
+    }
+    
+    func setStopButton() {
+        mainButtonOutlet.hidden = false
+        mainButtonOutlet.setTitle("Stop", forState: .Normal)
+        mainButtonOutlet.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        mainButtonOutlet.setBackgroundImage(UIImage(named: "MainButtonRed"), forState: .Normal)
+    }
+    
+    func setSaveButton() {
+        mainButtonOutlet.hidden = false
+        mainButtonOutlet.setTitle("Save", forState: .Normal)
+        mainButtonOutlet.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        mainButtonOutlet.setBackgroundImage(UIImage(named: "MainButtonYellow"), forState: .Normal)
 
+    }
+}
 
 
 

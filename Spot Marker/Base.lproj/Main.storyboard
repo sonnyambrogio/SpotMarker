@@ -34,7 +34,7 @@
                                 <size key="titleShadowOffset" width="1" height="1"/>
                                 <state key="normal" backgroundImage="MainButtonGreen"/>
                                 <connections>
-                                    <action selector="mainButtonAction:" destination="9pv-A4-QxB" eventType="touchUpInside" id="1h0-yQ-vVT"/>
+                                    <action selector="mainButtonAction:" destination="9pv-A4-QxB" eventType="touchUpInside" id="UlU-V3-WgD"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bLW-SE-2Tx">
@@ -95,7 +95,7 @@
                         <outlet property="clearButtonOutlet" destination="bLW-SE-2Tx" id="5Vm-kn-nhT"/>
                         <outlet property="latitudeLabel" destination="p9o-RE-dOf" id="8PG-ja-hjp"/>
                         <outlet property="longitudeLabel" destination="9bQ-V2-71t" id="c09-A1-JRQ"/>
-                        <outlet property="mainButtonOutlet" destination="WoS-Wh-UV6" id="Mc8-pg-5IN"/>
+                        <outlet property="mainButtonOutlet" destination="WoS-Wh-UV6" id="19i-pL-0Ne"/>
                         <outlet property="mapViewOutlet" destination="IV1-kp-mHG" id="g69-nf-Yga"/>
                         <outlet property="mapview" destination="IV1-kp-mHG" id="47L-ro-YUO"/>
                     </connections>
