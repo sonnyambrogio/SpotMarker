@@ -28,8 +28,6 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate {
     // MARK:- ** Constants **
     let locationManager = CLLocationManager()
     
-    let textMessages = TextMessages()
-    
     let initialLocation = CLLocation(latitude: 50.088333, longitude: -97.219444)   // Coordinates for the initial Map Location
     
     let regionRadius: CLLocationDistance = 1000     // Amount of Area the Map will show around the given Coordinates
@@ -41,14 +39,13 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate {
         
         clearAction()
         activityIndicator.hidden = true
-        mainButtonOutlet.setTitle(textMessages.getLocation, forState: .Normal)
+        
         
         setInitalMapView(initialLocation)
     }
     
     
     // MARK:- ** Outlets **
-    @IBOutlet weak var saveButtonOutlet: UIButton!
     @IBOutlet weak var clearButtonOutlet: UIButton!
     @IBOutlet weak var longitudeLabel: UILabel!
     @IBOutlet weak var latitudeLabel: UILabel!
@@ -200,9 +197,9 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate {
     
     func showLocationServicesDeniedAlert() {
         
-        let alert = UIAlertController(title: textMessages.locServDisabled, message: "Please enable Location Services for 'Spot Marker' in your Settings App", preferredStyle: .Alert)
+        let alert = UIAlertController(title: "Location Services Disabled", message: "Please enable Location Services for 'Spot Marker' in your Settings App", preferredStyle: .Alert)
         
-        let okAction = UIAlertAction(title: textMessages.ok, style: .Default, handler: nil)
+        let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
         
         alert.addAction(okAction)
         
@@ -261,12 +258,17 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate {
 
 
 
+//MARK: - Extensions
 
 
 extension GetLocationViewController {
+    // setting the appearance of the main button in 1 group of functions.
+    // each function contains the bare minimum appearance attributes for the 
+    // button for the state required.
+    
     func setGetLocationButton() {
         mainButtonOutlet.hidden = false
-        mainButtonOutlet.setTitle(textMessages.getLocation, forState: .Normal)
+        mainButtonOutlet.setTitle("Get", forState: .Normal)
         mainButtonOutlet.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         mainButtonOutlet.setBackgroundImage(UIImage(named: "MainButtonGreen"), forState: .Normal)
     }

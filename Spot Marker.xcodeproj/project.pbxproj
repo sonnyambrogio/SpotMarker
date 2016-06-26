@@ -13,7 +13,6 @@
 		E0DCE06C1D18273100C5E49E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0DCE06B1D18273100C5E49E /* Assets.xcassets */; };
 		E0DCE06E1D1975AC00C5E49E /* GetLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0DCE06D1D1975AC00C5E49E /* GetLocationViewController.swift */; };
 		E0DCE0701D1975DC00C5E49E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0DCE06F1D1975DC00C5E49E /* MapKit.framework */; };
-		E0DCE0721D19A29300C5E49E /* TextMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0DCE0711D19A29300C5E49E /* TextMessages.swift */; };
 		E0E189371D1AE9B200020F96 /* Annotations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0E189361D1AE9B200020F96 /* Annotations.swift */; };
 /* End PBXBuildFile section */
 
@@ -26,7 +25,6 @@
 		E0DCE06B1D18273100C5E49E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E0DCE06D1D1975AC00C5E49E /* GetLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetLocationViewController.swift; sourceTree = "<group>"; };
 		E0DCE06F1D1975DC00C5E49E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		E0DCE0711D19A29300C5E49E /* TextMessages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextMessages.swift; sourceTree = "<group>"; };
 		E0E189361D1AE9B200020F96 /* Annotations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Annotations.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -66,7 +64,6 @@
 				E0DCE05D1D18239600C5E49E /* Main.storyboard */,
 				E0DCE06D1D1975AC00C5E49E /* GetLocationViewController.swift */,
 				E0E189361D1AE9B200020F96 /* Annotations.swift */,
-				E0DCE0711D19A29300C5E49E /* TextMessages.swift */,
 				E0DCE0621D18239600C5E49E /* LaunchScreen.storyboard */,
 				E0DCE0651D18239600C5E49E /* Info.plist */,
 				E0DCE06B1D18273100C5E49E /* Assets.xcassets */,
@@ -154,7 +151,6 @@
 				E0DCE06E1D1975AC00C5E49E /* GetLocationViewController.swift in Sources */,
 				E0DCE0581D18239600C5E49E /* AppDelegate.swift in Sources */,
 				E0E189371D1AE9B200020F96 /* Annotations.swift in Sources */,
-				E0DCE0721D19A29300C5E49E /* TextMessages.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
