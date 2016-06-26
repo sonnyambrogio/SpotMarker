@@ -75,7 +75,8 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate {
         if annotationArray.isEmpty == false {
             mapview.removeAnnotation(annotationArray.last!)
         }
-        
+        longitudeLabel.hidden = false
+        longitudeLabel.text = "Tap 'Get' to Begin"
         setInitalMapView(initialLocation)
         mainButtonOutlet.hidden = false
     }
@@ -86,6 +87,7 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate {
             clearAction()
         } else if location == nil {
             getLocation()
+            longitudeLabel.hidden = true
         } else if location != nil {
             saveAction()
         }
@@ -152,7 +154,7 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate {
             activityIndicator.stopAnimating()
             activityIndicator.hidden = true
             
-            mainButtonOutlet.setTitle(textMessages.getLocation, forState: .Normal)
+            mainButtonOutlet.setTitle("Get", forState: .Normal)
             mainButtonOutlet.setBackgroundImage(UIImage(named: "MainButtonGreen"), forState: .Normal)
 
             
