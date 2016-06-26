@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D7F8C6F9D9252B8A5783FF77 /* Pods_Spot_Marker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEE07137983525DED442FF19 /* Pods_Spot_Marker.framework */; };
 		E0DCE0581D18239600C5E49E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0DCE0571D18239600C5E49E /* AppDelegate.swift */; };
 		E0DCE05F1D18239600C5E49E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0DCE05D1D18239600C5E49E /* Main.storyboard */; };
 		E0DCE0641D18239600C5E49E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0DCE0621D18239600C5E49E /* LaunchScreen.storyboard */; };
@@ -17,6 +18,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2CC95C3D93A22869FF136CDE /* Pods-Spot Marker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Spot Marker.release.xcconfig"; path = "Pods/Target Support Files/Pods-Spot Marker/Pods-Spot Marker.release.xcconfig"; sourceTree = "<group>"; };
+		5727202B87E8C5F9B6B6019F /* Pods-Spot Marker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Spot Marker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Spot Marker/Pods-Spot Marker.debug.xcconfig"; sourceTree = "<group>"; };
+		CEE07137983525DED442FF19 /* Pods_Spot_Marker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Spot_Marker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0DCE0541D18239600C5E49E /* Spot Marker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Spot Marker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0DCE0571D18239600C5E49E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E0DCE05E1D18239600C5E49E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -34,18 +38,30 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0DCE0701D1975DC00C5E49E /* MapKit.framework in Frameworks */,
+				D7F8C6F9D9252B8A5783FF77 /* Pods_Spot_Marker.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		15E07F5639972F641AC75BE6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5727202B87E8C5F9B6B6019F /* Pods-Spot Marker.debug.xcconfig */,
+				2CC95C3D93A22869FF136CDE /* Pods-Spot Marker.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		E0DCE04B1D18239600C5E49E = {
 			isa = PBXGroup;
 			children = (
 				E0DCE06F1D1975DC00C5E49E /* MapKit.framework */,
 				E0DCE0561D18239600C5E49E /* Spot Marker */,
 				E0DCE0551D18239600C5E49E /* Products */,
+				15E07F5639972F641AC75BE6 /* Pods */,
+				F40CAD2DC090DBCA2F877B83 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -71,6 +87,14 @@
 			path = "Spot Marker";
 			sourceTree = "<group>";
 		};
+		F40CAD2DC090DBCA2F877B83 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CEE07137983525DED442FF19 /* Pods_Spot_Marker.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -78,9 +102,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E0DCE0681D18239600C5E49E /* Build configuration list for PBXNativeTarget "Spot Marker" */;
 			buildPhases = (
+				22A60E24C37DB11BCC339BB5 /* [CP] Check Pods Manifest.lock */,
 				E0DCE0501D18239600C5E49E /* Sources */,
 				E0DCE0511D18239600C5E49E /* Frameworks */,
 				E0DCE0521D18239600C5E49E /* Resources */,
+				73B448B0F847546DA81D12E0 /* [CP] Embed Pods Frameworks */,
+				11F9B2AC4872DB13CF8699E4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -142,6 +169,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		11F9B2AC4872DB13CF8699E4 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Spot Marker/Pods-Spot Marker-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		22A60E24C37DB11BCC339BB5 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		73B448B0F847546DA81D12E0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Spot Marker/Pods-Spot Marker-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E0DCE0501D18239600C5E49E /* Sources */ = {
@@ -261,6 +336,7 @@
 		};
 		E0DCE0691D18239600C5E49E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5727202B87E8C5F9B6B6019F /* Pods-Spot Marker.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -275,6 +351,7 @@
 		};
 		E0DCE06A1D18239600C5E49E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2CC95C3D93A22869FF136CDE /* Pods-Spot Marker.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";

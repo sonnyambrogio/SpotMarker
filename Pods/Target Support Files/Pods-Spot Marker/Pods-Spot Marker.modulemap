@@ -1,0 +1,6 @@
+framework module Pods_Spot_Marker {
+  umbrella header "Pods-Spot Marker-umbrella.h"
+
+  export *
+  module * { export * }
+}
