@@ -155,7 +155,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kNI-Lt-xpS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="474" y="462"/>
+            <point key="canvasLocation" x="589" y="453"/>
         </scene>
     </scenes>
     <resources>
