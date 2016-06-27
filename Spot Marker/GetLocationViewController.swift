@@ -8,29 +8,26 @@
 
 import UIKit
 import MapKit
+import RealmSwift
 
 
-class GetLocationViewController: UIViewController, CLLocationManagerDelegate {
+class GetLocationViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
     // MARK:- ** Variables **
     var gettingLocation = false
     var lastLocationError: NSError?
-    
-    var longitude: Double?
-    var latitude: Double?
     var location: CLLocation?
-    
-    var annotationArray = [Annotations]()
-    
-
-    
+    var spotArray = [FoundSpot]()   // used to create a newly found "Spot" - Might not need to be an arrat=y...Change Later.!
+    var previouslySavedSpots = [FoundSpot]()    // uused to create an array of all the previously saved "Spots"
+    var titleToSave: String = ""
+    var infoToSave: String = ""
     
     // MARK:- ** Constants **
     let locationManager = CLLocationManager()
-    
     let initialLocation = CLLocation(latitude: 50.088333, longitude: -97.219444)   // Coordinates for the initial Map Location
-    
     let regionRadius: CLLocationDistance = 1000     // Amount of Area the Map will show around the given Coordinates
+    let realm = try! Realm()
+    let path = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)   // Get directory of app on device. Used for debugging purposes
     
     
     // MARK:- ** Life Cycle **
@@ -39,12 +36,12 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate {
         
         clearAction()
         activityIndicator.hidden = true
-        
+        print(path)
         
         setInitalMapView(initialLocation)
     }
     
-    
+
     // MARK:- ** Outlets **
     @IBOutlet weak var clearButtonOutlet: UIButton!
     @IBOutlet weak var longitudeLabel: UILabel!
@@ -56,10 +53,6 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate {
     
 
     // MARK:- ** Actions **
-    @IBAction func saveAction() {
-    }
-    
-    
     @IBAction func clearAction() {
         
         stopLocationManager()
@@ -69,13 +62,13 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate {
         
         // Check to see if the annotation array is empty.
         // If not, remove the last entry
-        if annotationArray.isEmpty == false {
-            mapview.removeAnnotation(annotationArray.last!)
+        if spotArray.isEmpty == false {
+            mapview.removeAnnotation(spotArray.last!)
         }
-        longitudeLabel.hidden = false
-        longitudeLabel.text = "Tap 'Get' to Begin"
+        
+        setGetLocationButton()
+        createPreviousAnnotationFromRealm()
         setInitalMapView(initialLocation)
-        mainButtonOutlet.hidden = false
     }
     
     
@@ -88,30 +81,41 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate {
         } else if location != nil {
             saveAction()
         }
-            
-        
     }
     
     
     
     // MARK:- ** Functions **
-    func setInitalMapView(location: CLLocation) {
-        let theSpan: MKCoordinateSpan = MKCoordinateSpanMake(50, 50)
-        let coordinateRegion: MKCoordinateRegion = MKCoordinateRegionMake(location.coordinate, theSpan)
-        mapview.setRegion(coordinateRegion, animated: true)
+    func createPreviousAnnotationFromRealm() {
+        let results = Array(realm.objects(Annotations))
+        
+        for spot in results {
+            let coordinate = CLLocationCoordinate2D(latitude: spot.latitude, longitude: spot.longitude)
+            let tempSpot = FoundSpot(title: spot.title, coordinate: coordinate, info: spot.info)
+            previouslySavedSpots.append(tempSpot)
+        }
+        mapview.addAnnotations(previouslySavedSpots)
+    }
+
+    func save() {
+        let spot = Annotations()
+        spot.title = titleToSave
+        spot.info = infoToSave
+        spot.longitude = (spotArray.first?.coordinate.longitude)!
+        spot.latitude = (spotArray.first?.coordinate.latitude)!
+        try! realm.write({
+            realm.add(spot)
+        })
+        
     }
     
-    func centerMapOnLocation(location: CLLocation) {
-        
-        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRadius * 2, regionRadius * 2)
-        mapview.setRegion(coordinateRegion, animated: true)
-    }
+    func saveAction() {
+        showSaveAlertForTitleAndInfoInput()
+        }
     
     
     func updateLabels() {
-        
         if let location = location {
-            
             setSaveButton()
             
             latitudeLabel.hidden = false
@@ -122,16 +126,12 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate {
             
             clearButtonOutlet.hidden = false
             
-            
             centerMapOnLocation(location)
             
-            let annotation = Annotations(title:"", coordinate: location.coordinate, info:"")
-            annotationArray.append(annotation)
-            mapview.addAnnotation(annotationArray.last!)
-            
-            
+            let annotation = FoundSpot(title:"", coordinate: location.coordinate, info:"")
+            spotArray.append(annotation)
+            mapview.addAnnotation(spotArray.last!)
         } else {
-            
             clearButtonOutlet.hidden = true
             latitudeLabel.hidden = true
             longitudeLabel.hidden = true
@@ -139,8 +139,75 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     
-    func stopLocationManager() {
+    func getLocation() {
+        let authStatus = CLLocationManager.authorizationStatus()
         
+        if authStatus == .NotDetermined {
+            locationManager.requestWhenInUseAuthorization()
+        }
+        
+        if authStatus == .Denied || authStatus == .Restricted {
+            showLocationServicesDeniedAlert()
+            return
+        }
+        startLocationManager()
+    }
+    
+}
+
+
+
+// MARK:-  ** Button Appearence **
+extension GetLocationViewController {
+    func setGetLocationButton() {
+        
+        mainButtonOutlet.hidden = false
+        mainButtonOutlet.setTitle("Get", forState: .Normal)
+        mainButtonOutlet.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        mainButtonOutlet.setBackgroundImage(UIImage(named: "MainButtonGreen"), forState: .Normal)
+        longitudeLabel.hidden = false
+        longitudeLabel.text = "tap 'Get' to Begin"
+        
+    }
+    
+    func setStopButton() {
+        mainButtonOutlet.hidden = false
+        mainButtonOutlet.setTitle("Stop", forState: .Normal)
+        mainButtonOutlet.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        mainButtonOutlet.setBackgroundImage(UIImage(named: "MainButtonRed"), forState: .Normal)
+    }
+    
+    func setSaveButton() {
+        mainButtonOutlet.hidden = false
+        mainButtonOutlet.setTitle("Save", forState: .Normal)
+        mainButtonOutlet.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        mainButtonOutlet.setBackgroundImage(UIImage(named: "MainButtonYellow"), forState: .Normal)
+
+    }
+}
+
+
+    // MARK:-  ** Basic Map Control **
+extension GetLocationViewController {
+    func setInitalMapView(location: CLLocation) {
+        let theSpan: MKCoordinateSpan = MKCoordinateSpanMake(50, 50)
+        let coordinateRegion: MKCoordinateRegion = MKCoordinateRegionMake(location.coordinate, theSpan)
+        mapview.setRegion(coordinateRegion, animated: true)
+    }
+    
+    func centerMapOnLocation(location: CLLocation) {
+        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRadius * 2, regionRadius * 2)
+        mapview.setRegion(coordinateRegion, animated: true)
+    }
+
+}
+
+
+
+    // MARK:-  ** Location Management **
+extension GetLocationViewController {
+    
+    func stopLocationManager() {
         if gettingLocation == true {
             
             locationManager.stopUpdatingLocation()
@@ -151,63 +218,28 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate {
             activityIndicator.stopAnimating()
             activityIndicator.hidden = true
             
-            mainButtonOutlet.setTitle("Get", forState: .Normal)
-            mainButtonOutlet.setBackgroundImage(UIImage(named: "MainButtonGreen"), forState: .Normal)
-
+            setGetLocationButton()
             
         }
     }
     
     
     func startLocationManager() {
-        
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
             
             activityIndicator.hidden = false
             activityIndicator.startAnimating()
             
-            mainButtonOutlet.setTitle("Stop", forState: .Normal)
-            mainButtonOutlet.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-            mainButtonOutlet.setBackgroundImage(UIImage(named: "MainButtonRed"), forState: .Normal)
-            
-            locationManager.startUpdatingLocation()
+            setStopButton()
             
             gettingLocation = true
         }
     }
     
     
-    func getLocation() {
-
-        let authStatus = CLLocationManager.authorizationStatus()
-        if authStatus == .NotDetermined {
-            locationManager.requestWhenInUseAuthorization()
-        }
-        
-        if authStatus == .Denied || authStatus == .Restricted {
-            showLocationServicesDeniedAlert()
-            return
-        }
-        
-        startLocationManager()
-    }
-    
-    
-    func showLocationServicesDeniedAlert() {
-        
-        let alert = UIAlertController(title: "Location Services Disabled", message: "Please enable Location Services for 'Spot Marker' in your Settings App", preferredStyle: .Alert)
-        
-        let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
-        
-        alert.addAction(okAction)
-        
-        presentViewController(alert, animated: true, completion: nil)
-    }
-    
-    
-    // MARK:-  ** CLLocationManagerDelegate **
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
         
         print("didFailWithError \(error)")
@@ -221,10 +253,9 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate {
         stopLocationManager()
         updateLabels()
     }
-    
+
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
         let newLocation = locations.last!
         print("didUpdateLocations \(newLocation)")
         // 1
@@ -248,56 +279,64 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate {
             }
         }
     }
-
-
-
-
-
-
 }
 
 
-
-//MARK: - Extensions
-
-
+// MARK:- ** Alerts **
 extension GetLocationViewController {
-    // setting the appearance of the main button in 1 group of functions.
-    // each function contains the bare minimum appearance attributes for the 
-    // button for the state required.
-    
-    func setGetLocationButton() {
-        mainButtonOutlet.hidden = false
-        mainButtonOutlet.setTitle("Get", forState: .Normal)
-        mainButtonOutlet.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        mainButtonOutlet.setBackgroundImage(UIImage(named: "MainButtonGreen"), forState: .Normal)
+    func showLocationServicesDeniedAlert() {
+        let alert = UIAlertController(title: "Location Services Disabled", message: "Please enable Location Services for 'Spot Marker' in your Settings App", preferredStyle: .Alert)
+        
+        let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+        
+        alert.addAction(okAction)
+        
+        presentViewController(alert, animated: true, completion: nil)
     }
     
-    func setStopButton() {
-        mainButtonOutlet.hidden = false
-        mainButtonOutlet.setTitle("Stop", forState: .Normal)
-        mainButtonOutlet.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        mainButtonOutlet.setBackgroundImage(UIImage(named: "MainButtonRed"), forState: .Normal)
+    func showSaveAlertForTitleAndInfoInput() {
+        let alert = UIAlertController(title: "Enter a Title and some Info about the 'Spot'", message: "Enter A Title First", preferredStyle: .Alert)
+        alert.addTextFieldWithConfigurationHandler({(textField: UITextField!) in
+        textField.placeholder = "Enter a Title"
+        })
+        let saveAction = UIAlertAction(title: "Save", style: .Default, handler:  {void in
+            let textfield = alert.textFields![0] as UITextField
+            self.titleToSave = textfield.text!
+            self.infoInputAlert()
+        })
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Default, handler: { void in
+            self.resignFirstResponder()
+        })
+        
+        alert.addAction(saveAction)
+        alert.addAction(cancelAction)
+        presentViewController(alert, animated: true, completion: nil)
     }
     
-    func setSaveButton() {
-        mainButtonOutlet.hidden = false
-        mainButtonOutlet.setTitle("Save", forState: .Normal)
-        mainButtonOutlet.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        mainButtonOutlet.setBackgroundImage(UIImage(named: "MainButtonYellow"), forState: .Normal)
-
+    func infoInputAlert() {
+        let alert = UIAlertController(title: "Enter a Title and some Info about the 'Spot'", message: "Now Enter a bit of Info", preferredStyle: .Alert)
+        
+        alert.addTextFieldWithConfigurationHandler({(textField: UITextField!) in
+            textField.placeholder = "Enter A brief Description"
+        })
+        let saveAction = UIAlertAction(title: "Save", style: .Default, handler: { void in
+            let textField = alert.textFields![0] as UITextField
+            self.infoToSave = textField.text!
+            self.setGetLocationButton()
+            self.save()
+            self.clearAction()
+        })
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Default, handler: { void in
+            self.resignFirstResponder()
+        })
+        alert.addAction(saveAction)
+        alert.addAction(cancelAction)
+        presentViewController(alert, animated: true, completion: nil)
     }
+    
+    
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
