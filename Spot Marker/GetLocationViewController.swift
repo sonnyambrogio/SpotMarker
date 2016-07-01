@@ -11,7 +11,7 @@ import MapKit
 import RealmSwift
 
 
-class GetLocationViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
+class GetLocationViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate{
     
     // MARK:- ** Variables **
     
@@ -29,30 +29,36 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate, MK
     var annotations: Results<Annotation>!
     
     // MARK:- ** Constants **
+    
+    let date = NSDate()
         // Location Based Constants
     let locationManager = CLLocationManager()
     let initialLocation = CLLocation(latitude: 50.088333, longitude: -97.219444)   // Coordinates for the initial Map Location
     let regionRadius: CLLocationDistance = 1000     // Amount of Area the Map will show around the given Coordinates
     
-        // Create a way to access the Realm
-    let realm = try! Realm()
-    
-    
         // Get directory of app on device. Used for debugging purposes
     let path = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+    
+    
     
     
     // MARK:- ** Life Cycle **
     override func viewDidLoad() {
         super.viewDidLoad()
+        let realm = try! Realm()
         annotations = realm.objects(Annotation)
 
-        clearAction()
+        if location != nil {
+            clearAction()
+        }
+        
+        setGetLocationButton()
         activityIndicator.hidden = true
         print(path)
         //print(annotations)
         
         setInitalMapView(initialLocation)
+  
     }
     
 
@@ -69,20 +75,22 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate, MK
     // MARK:- ** Actions **
     @IBAction func clearAction() {
         
+        print("\nClear Action Triggered...")
+        
         stopLocationManager()
         location = nil
         titleToSave = ""
         infoToSave = ""
-        location = nil
         setGetLocationButton()
         updateLabels()
 
         setGetLocationButton()
         
         setInitalMapView(initialLocation)
+
+        print("\nClear Results:\nLocation = \(location)\nTitleToSave = \(titleToSave)\nInfoToSave = \(infoToSave)\nHave a Nice Day!")
         
     }
-    
     
     @IBAction func mainButtonAction(sender: UIButton) {
         if gettingLocation {
@@ -95,29 +103,31 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate, MK
         }
     }
     
-    
-    
-    // MARK:- ** Functions **
-    func createPreviousAnnotationFromRealm() {
-        
-    }
 
+    // MARK:- ** Functions **
+    
     func save() {
+        
+        let realm = try! Realm()
         try! realm.write({
             print("titleToSave: \(titleToSave)\ninfoToSve: \(infoToSave)")
-            realm.add(Annotation(title: titleToSave, longitude: location!.coordinate.longitude, latitude: location!.coordinate.latitude, info: infoToSave))
+            realm.add(Annotation(title: titleToSave, longitude: location!.coordinate.longitude, latitude: location!.coordinate.latitude, info: infoToSave, date: date))
         })
+        
         annotations = realm.objects(Annotation)
         print(annotations)
         clearAction()
     }
     
+    
     func saveAction() {
+        
         showSaveAlertForTitleAndInfoInput()
         }
     
     
     func updateLabels() {
+        
         if let location = location {
             setSaveButton()
             
@@ -145,13 +155,14 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate, MK
 // MARK:-  ** Button Appearence **
 extension GetLocationViewController {
     func setGetLocationButton() {
-        
         mainButtonOutlet.hidden = false
         mainButtonOutlet.setTitle("Get", forState: .Normal)
         mainButtonOutlet.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         mainButtonOutlet.setBackgroundImage(UIImage(named: "MainButtonGreen"), forState: .Normal)
         longitudeLabel.hidden = false
-        longitudeLabel.text = "tap 'Get' to Begin"
+        longitudeLabel.text = "Tap 'Get' to Begin"
+        latitudeLabel.hidden = true
+        clearButtonOutlet.hidden = true
         
     }
     
@@ -276,6 +287,7 @@ extension GetLocationViewController {
                 print("*** We're done!")
                 stopLocationManager()
                 updateLabels()
+                
             }
         }
     }

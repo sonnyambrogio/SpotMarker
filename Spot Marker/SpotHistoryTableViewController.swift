@@ -17,6 +17,7 @@ class SpotHistoryTableViewController: UITableViewController {
     let realm = try! Realm()
     var annotations: Results<Annotation>!
     var spotHolderArray: Array<MKAnnotation> = []
+    var subscription: NotificationToken?
 
     //MARK:- ** LifeCycle **
     
@@ -29,21 +30,36 @@ class SpotHistoryTableViewController: UITableViewController {
         super.viewDidLoad()
         
         annotations = realm.objects(Annotation)
+        subscription = notificationSubscription(annotations)
+
         print(annotations)
-        
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
 
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
+    //MARK:- ** Functions **
     
+    func notificationSubscription(tasks: Results<Annotation>) -> NotificationToken {
+        return tasks.addNotificationBlock { [weak self] (changes: RealmCollectionChange<Results<Annotation>>) in
+            self?.updateUI(changes)
+        }
+    }
+
+    func updateUI(changes: RealmCollectionChange<Results<Annotation>>) {
+        switch changes {
+        case .Initial(_):
+            tableView.reloadData()
+        case .Update(_, deletions: let deletions, insertions: let insertions, modifications: _):
+            
+            tableView.beginUpdates()
+            tableView.insertRowsAtIndexPaths(insertions.map {NSIndexPath(forRow: $0, inSection: 0)}, withRowAnimation: .Automatic)
+            tableView.deleteRowsAtIndexPaths(deletions.map {NSIndexPath(forRow: $0, inSection: 0)}, withRowAnimation: .Automatic)
+            tableView.endUpdates()
+            
+            break
+        case .Error(let error):
+            print(error)
+        }
+    }
 
     // MARK: - Table view data source
 
@@ -71,29 +87,18 @@ class SpotHistoryTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    
-    // Override to support editing the table view.
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
+    
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-        
+            
             try! annotations.realm!.write {
                 let annotationToDelete = self.annotations[indexPath.row]
                 self.annotations.realm!.delete(annotationToDelete)
             }
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             print(annotations)
         }
     }
