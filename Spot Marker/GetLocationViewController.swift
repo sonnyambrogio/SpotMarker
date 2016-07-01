@@ -14,29 +14,43 @@ import RealmSwift
 class GetLocationViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
     // MARK:- ** Variables **
+    
+        // Location Based Variables
     var gettingLocation = false
     var lastLocationError: NSError?
     var location: CLLocation?
-    var spotArray = [FoundSpot]()   // used to create a newly found "Spot" - Might not need to be an arrat=y...Change Later.!
-    var previouslySavedSpots = [FoundSpot]()    // uused to create an array of all the previously saved "Spots"
+    
+        // info and title variables for saving purposes - (input by user)
     var titleToSave: String = ""
     var infoToSave: String = ""
     
+    
+        // use for Realm
+    var annotations: Results<Annotation>!
+    
     // MARK:- ** Constants **
+        // Location Based Constants
     let locationManager = CLLocationManager()
     let initialLocation = CLLocation(latitude: 50.088333, longitude: -97.219444)   // Coordinates for the initial Map Location
     let regionRadius: CLLocationDistance = 1000     // Amount of Area the Map will show around the given Coordinates
+    
+        // Create a way to access the Realm
     let realm = try! Realm()
-    let path = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)   // Get directory of app on device. Used for debugging purposes
+    
+    
+        // Get directory of app on device. Used for debugging purposes
+    let path = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
     
     
     // MARK:- ** Life Cycle **
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        annotations = realm.objects(Annotation)
+
         clearAction()
         activityIndicator.hidden = true
         print(path)
+        //print(annotations)
         
         setInitalMapView(initialLocation)
     }
@@ -57,18 +71,16 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate, MK
         
         stopLocationManager()
         location = nil
+        titleToSave = ""
+        infoToSave = ""
+        location = nil
         setGetLocationButton()
         updateLabels()
-        
-        // Check to see if the annotation array is empty.
-        // If not, remove the last entry
-        if spotArray.isEmpty == false {
-            mapview.removeAnnotation(spotArray.last!)
-        }
-        
+
         setGetLocationButton()
-        createPreviousAnnotationFromRealm()
+        
         setInitalMapView(initialLocation)
+        
     }
     
     
@@ -87,26 +99,17 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate, MK
     
     // MARK:- ** Functions **
     func createPreviousAnnotationFromRealm() {
-        let results = Array(realm.objects(Annotations))
         
-        for spot in results {
-            let coordinate = CLLocationCoordinate2D(latitude: spot.latitude, longitude: spot.longitude)
-            let tempSpot = FoundSpot(title: spot.title, coordinate: coordinate, info: spot.info)
-            previouslySavedSpots.append(tempSpot)
-        }
-        mapview.addAnnotations(previouslySavedSpots)
     }
 
     func save() {
-        let spot = Annotations()
-        spot.title = titleToSave
-        spot.info = infoToSave
-        spot.longitude = (spotArray.first?.coordinate.longitude)!
-        spot.latitude = (spotArray.first?.coordinate.latitude)!
         try! realm.write({
-            realm.add(spot)
+            print("titleToSave: \(titleToSave)\ninfoToSve: \(infoToSave)")
+            realm.add(Annotation(title: titleToSave, longitude: location!.coordinate.longitude, latitude: location!.coordinate.latitude, info: infoToSave))
         })
-        
+        annotations = realm.objects(Annotation)
+        print(annotations)
+        clearAction()
     }
     
     func saveAction() {
@@ -127,30 +130,12 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate, MK
             clearButtonOutlet.hidden = false
             
             centerMapOnLocation(location)
-            
-            let annotation = FoundSpot(title:"", coordinate: location.coordinate, info:"")
-            spotArray.append(annotation)
-            mapview.addAnnotation(spotArray.last!)
+        
         } else {
             clearButtonOutlet.hidden = true
             latitudeLabel.hidden = true
             longitudeLabel.hidden = true
         }
-    }
-    
-    
-    func getLocation() {
-        let authStatus = CLLocationManager.authorizationStatus()
-        
-        if authStatus == .NotDetermined {
-            locationManager.requestWhenInUseAuthorization()
-        }
-        
-        if authStatus == .Denied || authStatus == .Restricted {
-            showLocationServicesDeniedAlert()
-            return
-        }
-        startLocationManager()
     }
     
 }
@@ -206,6 +191,21 @@ extension GetLocationViewController {
 
     // MARK:-  ** Location Management **
 extension GetLocationViewController {
+    
+    func getLocation() {
+        let authStatus = CLLocationManager.authorizationStatus()
+        
+        if authStatus == .NotDetermined {
+            locationManager.requestWhenInUseAuthorization()
+        }
+        
+        if authStatus == .Denied || authStatus == .Restricted {
+            showLocationServicesDeniedAlert()
+            return
+        }
+        startLocationManager()
+    }
+    
     
     func stopLocationManager() {
         if gettingLocation == true {

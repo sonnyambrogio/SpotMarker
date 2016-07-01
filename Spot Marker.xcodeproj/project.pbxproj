@@ -8,21 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		D7F8C6F9D9252B8A5783FF77 /* Pods_Spot_Marker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEE07137983525DED442FF19 /* Pods_Spot_Marker.framework */; };
-		E08850DD1D2084B10034C559 /* Annotations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08850DC1D2084B10034C559 /* Annotations.swift */; };
+		E038B3421D2157E7008C5F1B /* SpotHistoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E038B3411D2157E7008C5F1B /* SpotHistoryTableViewController.swift */; };
+		E038B3481D217364008C5F1B /* PreviousSpotTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E038B3471D217364008C5F1B /* PreviousSpotTableViewCell.swift */; };
+		E038B34A1D25E820008C5F1B /* Annotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E038B3491D25E820008C5F1B /* Annotation.swift */; };
 		E0DCE0581D18239600C5E49E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0DCE0571D18239600C5E49E /* AppDelegate.swift */; };
 		E0DCE05F1D18239600C5E49E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0DCE05D1D18239600C5E49E /* Main.storyboard */; };
 		E0DCE0641D18239600C5E49E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0DCE0621D18239600C5E49E /* LaunchScreen.storyboard */; };
 		E0DCE06C1D18273100C5E49E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0DCE06B1D18273100C5E49E /* Assets.xcassets */; };
 		E0DCE06E1D1975AC00C5E49E /* GetLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0DCE06D1D1975AC00C5E49E /* GetLocationViewController.swift */; };
 		E0DCE0701D1975DC00C5E49E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0DCE06F1D1975DC00C5E49E /* MapKit.framework */; };
-		E0E189371D1AE9B200020F96 /* FoundSpot.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0E189361D1AE9B200020F96 /* FoundSpot.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2CC95C3D93A22869FF136CDE /* Pods-Spot Marker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Spot Marker.release.xcconfig"; path = "Pods/Target Support Files/Pods-Spot Marker/Pods-Spot Marker.release.xcconfig"; sourceTree = "<group>"; };
 		5727202B87E8C5F9B6B6019F /* Pods-Spot Marker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Spot Marker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Spot Marker/Pods-Spot Marker.debug.xcconfig"; sourceTree = "<group>"; };
 		CEE07137983525DED442FF19 /* Pods_Spot_Marker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Spot_Marker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E08850DC1D2084B10034C559 /* Annotations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Annotations.swift; sourceTree = "<group>"; };
+		E038B3411D2157E7008C5F1B /* SpotHistoryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotHistoryTableViewController.swift; sourceTree = "<group>"; };
+		E038B3471D217364008C5F1B /* PreviousSpotTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviousSpotTableViewCell.swift; sourceTree = "<group>"; };
+		E038B3491D25E820008C5F1B /* Annotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Annotation.swift; sourceTree = "<group>"; };
 		E0DCE0541D18239600C5E49E /* Spot Marker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Spot Marker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0DCE0571D18239600C5E49E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E0DCE05E1D18239600C5E49E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -31,7 +34,6 @@
 		E0DCE06B1D18273100C5E49E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E0DCE06D1D1975AC00C5E49E /* GetLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetLocationViewController.swift; sourceTree = "<group>"; };
 		E0DCE06F1D1975DC00C5E49E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		E0E189361D1AE9B200020F96 /* FoundSpot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoundSpot.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,43 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		E038B3431D2157F9008C5F1B /* StoryBoard */ = {
+			isa = PBXGroup;
+			children = (
+				E0DCE05D1D18239600C5E49E /* Main.storyboard */,
+				E0DCE0621D18239600C5E49E /* LaunchScreen.storyboard */,
+			);
+			name = StoryBoard;
+			sourceTree = "<group>";
+		};
+		E038B3441D215804008C5F1B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E038B3471D217364008C5F1B /* PreviousSpotTableViewCell.swift */,
+				E0DCE06D1D1975AC00C5E49E /* GetLocationViewController.swift */,
+				E038B3411D2157E7008C5F1B /* SpotHistoryTableViewController.swift */,
+			);
+			name = ViewController;
+			sourceTree = "<group>";
+		};
+		E038B3451D215821008C5F1B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E038B3491D25E820008C5F1B /* Annotation.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		E038B3461D21582E008C5F1B /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				E0DCE0571D18239600C5E49E /* AppDelegate.swift */,
+				E0DCE0651D18239600C5E49E /* Info.plist */,
+				E0DCE06B1D18273100C5E49E /* Assets.xcassets */,
+			);
+			name = Support;
+			sourceTree = "<group>";
+		};
 		E0DCE04B1D18239600C5E49E = {
 			isa = PBXGroup;
 			children = (
@@ -78,14 +117,10 @@
 		E0DCE0561D18239600C5E49E /* Spot Marker */ = {
 			isa = PBXGroup;
 			children = (
-				E0DCE0571D18239600C5E49E /* AppDelegate.swift */,
-				E0DCE05D1D18239600C5E49E /* Main.storyboard */,
-				E0DCE06D1D1975AC00C5E49E /* GetLocationViewController.swift */,
-				E08850DC1D2084B10034C559 /* Annotations.swift */,
-				E0E189361D1AE9B200020F96 /* FoundSpot.swift */,
-				E0DCE0621D18239600C5E49E /* LaunchScreen.storyboard */,
-				E0DCE0651D18239600C5E49E /* Info.plist */,
-				E0DCE06B1D18273100C5E49E /* Assets.xcassets */,
+				E038B3431D2157F9008C5F1B /* StoryBoard */,
+				E038B3441D215804008C5F1B /* ViewController */,
+				E038B3451D215821008C5F1B /* Model */,
+				E038B3461D21582E008C5F1B /* Support */,
 			);
 			path = "Spot Marker";
 			sourceTree = "<group>";
@@ -226,10 +261,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E038B3481D217364008C5F1B /* PreviousSpotTableViewCell.swift in Sources */,
+				E038B34A1D25E820008C5F1B /* Annotation.swift in Sources */,
 				E0DCE06E1D1975AC00C5E49E /* GetLocationViewController.swift in Sources */,
-				E08850DD1D2084B10034C559 /* Annotations.swift in Sources */,
 				E0DCE0581D18239600C5E49E /* AppDelegate.swift in Sources */,
-				E0E189371D1AE9B200020F96 /* FoundSpot.swift in Sources */,
+				E038B3421D2157E7008C5F1B /* SpotHistoryTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -121,29 +121,66 @@
                     </tabBar>
                     <connections>
                         <segue destination="9pv-A4-QxB" kind="relationship" relationship="viewControllers" id="u7Y-xg-7CH"/>
-                        <segue destination="dzk-3o-msb" kind="relationship" relationship="viewControllers" id="cn2-rn-qGs"/>
+                        <segue destination="gQK-wV-Hpg" kind="relationship" relationship="viewControllers" id="cn2-rn-qGs"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="0.0" y="0.0"/>
         </scene>
-        <!--History-->
+        <!--Spots-->
         <scene sceneID="PtL-Hz-dvX">
             <objects>
-                <tableViewController id="dzk-3o-msb" sceneMemberID="viewController">
+                <tableViewController id="dzk-3o-msb" customClass="SpotHistoryTableViewController" customModule="Spot_Marker" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="lAB-nN-5zX">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="fLF-aT-qga">
-                                <rect key="frame" x="0.0" y="28" width="320" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="fLF-aT-qga" customClass="PreviousSpotTableViewCell" customModule="Spot_Marker" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="92" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fLF-aT-qga" id="cFQ-dJ-aHc">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;Title&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vUK-LL-77i">
+                                            <rect key="frame" x="8" y="11" width="55" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="bottom" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="FID-NT-xep">
+                                            <rect key="frame" x="71" y="2" width="231" height="34"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" misplaced="YES" text="&lt;longLabel&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qqj-ZE-zaE">
+                                                    <rect key="frame" x="165" y="0.0" width="66" height="16"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="11"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="&lt;latLabel&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IEH-Yh-gYT">
+                                                    <rect key="frame" x="176" y="19" width="55" height="16"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="11"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="FID-NT-xep" firstAttribute="leading" secondItem="vUK-LL-77i" secondAttribute="trailing" constant="8" id="BT2-fs-xPp"/>
+                                        <constraint firstItem="vUK-LL-77i" firstAttribute="centerY" secondItem="cFQ-dJ-aHc" secondAttribute="centerY" id="WIb-K5-BME"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="FID-NT-xep" secondAttribute="trailing" constant="11" id="dno-Ll-pdl"/>
+                                        <constraint firstAttribute="leadingMargin" secondItem="vUK-LL-77i" secondAttribute="leading" id="prF-kq-P94"/>
+                                        <constraint firstItem="FID-NT-xep" firstAttribute="top" secondItem="cFQ-dJ-aHc" secondAttribute="topMargin" constant="-6" id="wvT-w8-q7q"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="latLabel" destination="IEH-Yh-gYT" id="4Jk-7T-GC1"/>
+                                    <outlet property="longLabel" destination="Qqj-ZE-zaE" id="065-4j-2V5"/>
+                                    <outlet property="titleLabel" destination="vUK-LL-77i" id="ClD-U4-WMo"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -151,9 +188,28 @@
                             <outlet property="delegate" destination="dzk-3o-msb" id="FmI-wJ-779"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="History" image="second" id="rFI-L7-vF2"/>
+                    <navigationItem key="navigationItem" title="Spots" id="ccR-sM-HAc"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kNI-Lt-xpS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1121" y="453"/>
+        </scene>
+        <!--History-->
+        <scene sceneID="cdA-6v-5td">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="gQK-wV-Hpg" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="History" image="second" id="rFI-L7-vF2"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="xrm-Pe-3ec">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="dzk-3o-msb" kind="relationship" relationship="rootViewController" id="0eS-gg-NLD"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="STW-oc-USB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="589" y="453"/>
         </scene>
