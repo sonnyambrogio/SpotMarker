@@ -24,6 +24,7 @@ class SpotHistoryTableViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
+        print("\nInitial Saved Spots:\n\(annotations)")
     }
     
     override func viewDidLoad() {
@@ -31,8 +32,6 @@ class SpotHistoryTableViewController: UITableViewController {
         
         annotations = realm.objects(Annotation)
         subscription = notificationSubscription(annotations)
-
-        print(annotations)
 
     }
     
@@ -99,7 +98,7 @@ class SpotHistoryTableViewController: UITableViewController {
                 let annotationToDelete = self.annotations[indexPath.row]
                 self.annotations.realm!.delete(annotationToDelete)
             }
-            print(annotations)
+            print("\n\(annotations)")
         }
     }
    

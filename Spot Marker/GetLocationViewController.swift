@@ -11,7 +11,7 @@ import MapKit
 import RealmSwift
 
 
-class GetLocationViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate{
+class GetLocationViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
     // MARK:- ** Variables **
     
@@ -19,6 +19,9 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate, MK
     var gettingLocation = false
     var lastLocationError: NSError?
     var location: CLLocation?
+    
+    var pointHandlerArray: Array<Spot> = []
+    var previousSavedSpots: Array<Spot> = []
     
         // info and title variables for saving purposes - (input by user)
     var titleToSave: String = ""
@@ -38,11 +41,21 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate, MK
     
         // Get directory of app on device. Used for debugging purposes
     let path = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-    
-    
-    
+
     
     // MARK:- ** Life Cycle **
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        mapview.removeAnnotations(previousSavedSpots)
+        previousSavedSpots.removeAll()
+        print("\nOld Array Count: \(previousSavedSpots.count)")
+        populatePreviousSpots()
+        print("\nArray Count: \(previousSavedSpots.count)")
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let realm = try! Realm()
@@ -55,14 +68,14 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate, MK
         setGetLocationButton()
         activityIndicator.hidden = true
         print(path)
-        //print(annotations)
         
         setInitalMapView(initialLocation)
-  
+        
     }
     
 
     // MARK:- ** Outlets **
+    
     @IBOutlet weak var clearButtonOutlet: UIButton!
     @IBOutlet weak var longitudeLabel: UILabel!
     @IBOutlet weak var latitudeLabel: UILabel!
@@ -73,6 +86,7 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate, MK
     
 
     // MARK:- ** Actions **
+    
     @IBAction func clearAction() {
         
         print("\nClear Action Triggered...")
@@ -87,7 +101,11 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate, MK
         setGetLocationButton()
         
         setInitalMapView(initialLocation)
-
+        
+        
+        mapview.removeAnnotations(pointHandlerArray)
+        
+        
         print("\nClear Results:\nLocation = \(location)\nTitleToSave = \(titleToSave)\nInfoToSave = \(infoToSave)\nHave a Nice Day!")
         
     }
@@ -106,21 +124,32 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate, MK
 
     // MARK:- ** Functions **
     
+    func createPointWhenLocationFound() {
+        if let location = location {
+           let spot = Spot(title: "", info: "", coordinate: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude))
+
+            pointHandlerArray.append(spot)
+            mapview.addAnnotation(pointHandlerArray.last!)
+        }
+      
+    }
+    
     func save() {
         
         let realm = try! Realm()
-        try! realm.write({
-            print("titleToSave: \(titleToSave)\ninfoToSve: \(infoToSave)")
+        try! realm.write {
             realm.add(Annotation(title: titleToSave, longitude: location!.coordinate.longitude, latitude: location!.coordinate.latitude, info: infoToSave, date: date))
-        })
+        }
         
-        annotations = realm.objects(Annotation)
-        print(annotations)
-        clearAction()
+//        annotations = realm.objects(Annotation)
+        print("\nAnnotations after Save:\n\(annotations)")
     }
     
     
     func saveAction() {
+        mapview.removeAnnotations(previousSavedSpots)
+        previousSavedSpots.removeAll()
+
         
         showSaveAlertForTitleAndInfoInput()
         }
@@ -148,11 +177,24 @@ class GetLocationViewController: UIViewController, CLLocationManagerDelegate, MK
         }
     }
     
+    
+    func populatePreviousSpots() {
+        previousSavedSpots.removeAll()
+        
+        for spots in annotations {
+            let coordinate = CLLocationCoordinate2D(latitude: spots.latitude, longitude: spots.longitude)
+            let i = Spot(title: spots.title, info: spots.info, coordinate: coordinate)
+            previousSavedSpots.append(i)
+        }
+        mapview.addAnnotations(previousSavedSpots)
+    }
+    
 }
 
 
 
-// MARK:-  ** Button Appearence **
+    // MARK:-  ** Button Appearence **
+
 extension GetLocationViewController {
     func setGetLocationButton() {
         mainButtonOutlet.hidden = false
@@ -184,6 +226,7 @@ extension GetLocationViewController {
 
 
     // MARK:-  ** Basic Map Control **
+
 extension GetLocationViewController {
     func setInitalMapView(location: CLLocation) {
         let theSpan: MKCoordinateSpan = MKCoordinateSpanMake(50, 50)
@@ -201,6 +244,7 @@ extension GetLocationViewController {
 
 
     // MARK:-  ** Location Management **
+
 extension GetLocationViewController {
     
     func getLocation() {
@@ -216,7 +260,6 @@ extension GetLocationViewController {
         }
         startLocationManager()
     }
-    
     
     func stopLocationManager() {
         if gettingLocation == true {
@@ -234,7 +277,6 @@ extension GetLocationViewController {
         }
     }
     
-    
     func startLocationManager() {
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
@@ -250,7 +292,6 @@ extension GetLocationViewController {
         }
     }
     
-    
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
         
         print("didFailWithError \(error)")
@@ -265,10 +306,9 @@ extension GetLocationViewController {
         updateLabels()
     }
 
-    
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let newLocation = locations.last!
-        print("didUpdateLocations \(newLocation)")
+        print("\ndidUpdateLocations \(newLocation)")
         // 1
         if newLocation.timestamp.timeIntervalSinceNow < -5 { return
         }
@@ -284,17 +324,17 @@ extension GetLocationViewController {
             
             // 5
             if newLocation.horizontalAccuracy <= locationManager.desiredAccuracy {
-                print("*** We're done!")
+                print("*** We're done!\n")
                 stopLocationManager()
                 updateLabels()
-                
+                createPointWhenLocationFound()
             }
         }
     }
 }
 
 
-// MARK:- ** Alerts **
+    // MARK:- ** Alerts **
 extension GetLocationViewController {
     func showLocationServicesDeniedAlert() {
         let alert = UIAlertController(title: "Location Services Disabled", message: "Please enable Location Services for 'Spot Marker' in your Settings App", preferredStyle: .Alert)
@@ -315,6 +355,7 @@ extension GetLocationViewController {
             let textfield = alert.textFields![0] as UITextField
             self.titleToSave = textfield.text!
             self.infoInputAlert()
+            self.mapview.removeAnnotations(self.previousSavedSpots)
         })
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .Default, handler: { void in
@@ -336,8 +377,13 @@ extension GetLocationViewController {
             let textField = alert.textFields![0] as UITextField
             self.infoToSave = textField.text!
             self.setGetLocationButton()
+            self.mapview.removeAnnotations(self.previousSavedSpots)
+            self.previousSavedSpots.removeAll()
+            
             self.save()
             self.clearAction()
+            self.populatePreviousSpots()
+            
         })
         let cancelAction = UIAlertAction(title: "Cancel", style: .Default, handler: { void in
             self.resignFirstResponder()
@@ -346,8 +392,6 @@ extension GetLocationViewController {
         alert.addAction(cancelAction)
         presentViewController(alert, animated: true, completion: nil)
     }
-    
-    
 }
 
 

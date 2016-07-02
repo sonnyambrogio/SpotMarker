@@ -11,6 +11,7 @@
 		E038B3421D2157E7008C5F1B /* SpotHistoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E038B3411D2157E7008C5F1B /* SpotHistoryTableViewController.swift */; };
 		E038B3481D217364008C5F1B /* PreviousSpotTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E038B3471D217364008C5F1B /* PreviousSpotTableViewCell.swift */; };
 		E038B34A1D25E820008C5F1B /* Annotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E038B3491D25E820008C5F1B /* Annotation.swift */; };
+		E038B34E1D26D5E2008C5F1B /* Spot.swift in Sources */ = {isa = PBXBuildFile; fileRef = E038B34D1D26D5E2008C5F1B /* Spot.swift */; };
 		E0DCE0581D18239600C5E49E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0DCE0571D18239600C5E49E /* AppDelegate.swift */; };
 		E0DCE05F1D18239600C5E49E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0DCE05D1D18239600C5E49E /* Main.storyboard */; };
 		E0DCE0641D18239600C5E49E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0DCE0621D18239600C5E49E /* LaunchScreen.storyboard */; };
@@ -26,6 +27,7 @@
 		E038B3411D2157E7008C5F1B /* SpotHistoryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotHistoryTableViewController.swift; sourceTree = "<group>"; };
 		E038B3471D217364008C5F1B /* PreviousSpotTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviousSpotTableViewCell.swift; sourceTree = "<group>"; };
 		E038B3491D25E820008C5F1B /* Annotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Annotation.swift; sourceTree = "<group>"; };
+		E038B34D1D26D5E2008C5F1B /* Spot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spot.swift; sourceTree = "<group>"; };
 		E0DCE0541D18239600C5E49E /* Spot Marker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Spot Marker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0DCE0571D18239600C5E49E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E0DCE05E1D18239600C5E49E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -80,6 +82,7 @@
 		E038B3451D215821008C5F1B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				E038B34D1D26D5E2008C5F1B /* Spot.swift */,
 				E038B3491D25E820008C5F1B /* Annotation.swift */,
 			);
 			name = Model;
@@ -262,6 +265,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E038B3481D217364008C5F1B /* PreviousSpotTableViewCell.swift in Sources */,
+				E038B34E1D26D5E2008C5F1B /* Spot.swift in Sources */,
 				E038B34A1D25E820008C5F1B /* Annotation.swift in Sources */,
 				E0DCE06E1D1975AC00C5E49E /* GetLocationViewController.swift in Sources */,
 				E0DCE0581D18239600C5E49E /* AppDelegate.swift in Sources */,
